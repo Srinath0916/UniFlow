@@ -25287,7 +25287,7 @@
 {
   "model": "info.user",
   "fields": {
-    "password": "pbkdf2_sha256$1200000$vSVNlA0Y16Ie229VCJTOa0$+yKYOqlLWpuwjRNx96O7Omv6dWeXNPWyh/oWIXAKfws=",
+    "password": "pbkdf2_sha256$1200000$S9bPgLMUn2Fzy2dDOQhYDr$c0AHRhUagZdPJT6ka4Nnsdic9iEgRAd3IHztfCrCKas=",
     "last_login": "2026-03-18T15:41:45.433Z",
     "is_superuser": false,
     "username": "srinath",
