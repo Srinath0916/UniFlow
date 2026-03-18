@@ -14,8 +14,8 @@ print(get_user_model().objects.count())
 echo "User count: $USER_COUNT"
 
 if [ "$USER_COUNT" = "0" ]; then
-    echo "Empty DB — loading fixture..."
-    python manage.py loaddata fixtures/initial_data.json
+    echo "Empty DB — loading fixture with signals disabled..."
+    python manage.py load_initial_data
     echo "Done."
 else
     echo "DB already populated."
