@@ -1,90 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Uniflow — Signed Out</title>
+  {% load static %}
+  <link href="{% static '/info/bootstrap/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
 
-  <head>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    body {
+      background-color: #1a1d21;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
 
-    <title>{% block title %}{% endblock %}</title>
-      {% load static %}
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-    <!-- Bootstrap core CSS-->
-    <link href="{% static '/info/bootstrap/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 380px;
+      padding: 1rem;
+      text-align: center;
+    }
 
-    <!-- Custom fonts for this template-->
-    <link href="{% static '/info/bootstrap/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    .icon-ring {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(40, 167, 69, 0.12);
+      border: 1px solid rgba(40, 167, 69, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 1.4rem;
+      color: #28a745;
+    }
 
-    <!-- Page level plugin CSS-->
-    <link href="{% static '/info/bootstrap/vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #f8f9fa;
+      margin: 0 0 0.4rem;
+    }
 
-    <!-- Custom styles for this template-->
-    <link href="{% static '/info/bootstrap/css/sb-admin.css' %}" rel="stylesheet">
+    p {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin: 0 0 2rem;
+    }
 
-    <!-- Latest compiled and minified CSS -->
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #28a745;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.6rem 1.5rem;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+    }
 
+    .btn-back:hover { background: #218838; color: #fff; text-decoration: none; }
+    .btn-back:active { transform: scale(0.98); }
 
-      {% block css %}
-      {% endblock %}
-
-  </head>
-
-  <body id="page-top">
-
-    <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-
-      <a class="navbar-brand mr-1" href="{% url 'index' %}">Uniflow</a>
-
-      <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
-        <i class="fas fa-bars"></i>
-      </button>
-
-
-    </nav>
-
-    <div id="wrapper">
-
-
-      <div id="content-wrapper">
-
-        <div class="container-fluid">
-
-            <div class="text-center h3">
-                you have been logged out
-                <br><br>
-                <a class="btn btn-success" href="/accounts/login">login?</a>
-            </div>
-
-        </div>
-        <!-- /.container-fluid -->
-
-      </div>
-      <!-- /.content-wrapper -->
-
+    .footer-note {
+      margin-top: 2rem;
+      font-size: 0.72rem;
+      color: #343a40;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="icon-ring">
+      <i class="fas fa-sign-out-alt"></i>
     </div>
-    <!-- /#wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
+    <h2>You've been signed out</h2>
+    <p>Your session has ended. Sign back in whenever you're ready.</p>
+    <a href="/accounts/login/" class="btn-back">
+      <i class="fas fa-arrow-left"></i> Back to Sign In
     </a>
-
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="{% static '/info/bootstrap/vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static '/info/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="{% static '/info/bootstrap/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="{% static '/info/bootstrap/js/sb-admin.min.js' %}"></script>
-
-   {% block scripts %}
-    {% endblock %}
-  </body>
-
+    <div class="footer-note">Uniflow &copy; {% now "Y" %}</div>
+  </div>
+</body>
 </html>

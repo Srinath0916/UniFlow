@@ -1,52 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Uniflow — Sign In</title>
+  {% load static %}
+  <link href="{% static '/info/bootstrap/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
 
-  <head>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    body {
+      background-color: #1a1d21;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
 
-    <title>Login</title>
+    /* subtle grid pattern on bg */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-      {% load static %}
+    .login-wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 400px;
+      padding: 1rem;
+    }
 
-    <!-- Bootstrap core CSS-->
-    <link href="{% static '/info/bootstrap/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    /* brand bar */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 2rem;
+    }
 
-    <!-- Custom fonts for this template-->
-    <link href="{% static '/info/bootstrap/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: #28a745;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #fff;
+      flex-shrink: 0;
+    }
 
-    <!-- Custom styles for this template-->
-    <link href="{% static '/info/bootstrap/css/sb-admin.css' %}" rel="stylesheet">
+    .brand-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
 
-  </head>
+    .brand-tagline {
+      font-size: 0.72rem;
+      color: #6c757d;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 1px;
+    }
 
-  <body class="bg-dark">
+    /* card */
+    .login-card {
+      background: #212529;
+      border: 1px solid #2e3338;
+      border-radius: 12px;
+      padding: 2rem;
+    }
 
-    <div class="container">
-      <div class="card card-login mx-auto mt-5">
-        <div class="card-header">Login</div>
-        <div class="card-body">
-            <form method="post">
-              {% csrf_token %}
-              {{ form.as_p }}
-              <button  class="btn btn-success" type="submit">Login</button>
-            </form>
+    .login-card h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #f8f9fa;
+      margin: 0 0 0.25rem;
+    }
 
-        </div>
+    .login-card p.sub {
+      font-size: 0.82rem;
+      color: #6c757d;
+      margin: 0 0 1.75rem;
+    }
+
+    /* error block */
+    .error-block {
+      background: rgba(220, 53, 69, 0.1);
+      border: 1px solid rgba(220, 53, 69, 0.3);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.82rem;
+      color: #f5a0a8;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .error-block i { margin-top: 2px; flex-shrink: 0; }
+
+    /* field */
+    .field {
+      margin-bottom: 1.1rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #adb5bd;
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.2px;
+    }
+
+    .field-inner {
+      position: relative;
+    }
+
+    .field-inner i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #495057;
+      font-size: 0.8rem;
+      pointer-events: none;
+      transition: color 0.15s;
+    }
+
+    .field-inner input {
+      width: 100%;
+      background: #16191c;
+      border: 1px solid #2e3338;
+      border-radius: 8px;
+      color: #f8f9fa;
+      font-size: 0.9rem;
+      padding: 0.6rem 0.75rem 0.6rem 2.25rem;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      -webkit-appearance: none;
+    }
+
+    .field-inner input::placeholder { color: #495057; }
+
+    .field-inner input:focus {
+      border-color: #28a745;
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+    }
+
+    .field-inner input:focus + i,
+    .field-inner:focus-within i { color: #28a745; }
+
+    /* toggle password */
+    .toggle-pw {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #495057;
+      cursor: pointer;
+      padding: 0;
+      font-size: 0.8rem;
+      pointer-events: all;
+      transition: color 0.15s;
+    }
+    .toggle-pw:hover { color: #adb5bd; }
+
+    /* submit */
+    .btn-login {
+      width: 100%;
+      background: #28a745;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.65rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.15s, transform 0.1s;
+      letter-spacing: 0.2px;
+    }
+
+    .btn-login:hover { background: #218838; }
+    .btn-login:active { transform: scale(0.99); }
+
+    /* footer note */
+    .login-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      color: #495057;
+    }
+
+    .login-footer a {
+      color: #6c757d;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .login-footer a:hover { color: #adb5bd; }
+
+    /* admin link */
+    .admin-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 1.25rem;
+      font-size: 0.75rem;
+      color: #495057;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .admin-link:hover { color: #adb5bd; text-decoration: none; }
+    .admin-link i { font-size: 0.7rem; }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+
+    <div class="brand">
+      <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+      <div>
+        <div class="brand-name">Uniflow</div>
+        <div class="brand-tagline">College Management System</div>
       </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="{% static '/info/bootstrap/vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static '/info/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <div class="login-card">
+      <h2>Welcome back</h2>
+      <p class="sub">Sign in to your account to continue</p>
 
-    <!-- Core plugin JavaScript-->
-    <script src="{% static '/info/bootstrap/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+      {% if form.errors %}
+      <div class="error-block">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Invalid username or password. Please try again.</span>
+      </div>
+      {% endif %}
 
-  </body>
+      <form method="post" autocomplete="off">
+        {% csrf_token %}
 
+        <div class="field">
+          <label for="id_username">Username</label>
+          <div class="field-inner">
+            <input
+              type="text"
+              id="id_username"
+              name="username"
+              placeholder="Enter your username"
+              value="{{ form.username.value|default:'' }}"
+              autofocus
+            >
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="id_password">Password</label>
+          <div class="field-inner">
+            <input
+              type="password"
+              id="id_password"
+              name="password"
+              placeholder="Enter your password"
+            >
+            <i class="fas fa-lock"></i>
+            <button type="button" class="toggle-pw" onclick="togglePw()" aria-label="Toggle password visibility">
+              <i class="fas fa-eye" id="pw-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login">Sign In</button>
+      </form>
+    </div>
+
+    <a href="/admin/" class="admin-link">
+      <i class="fas fa-shield-alt"></i> Admin portal
+    </a>
+
+    <div class="login-footer">
+      Uniflow &copy; {% now "Y" %} &mdash; JSS Academy
+    </div>
+
+  </div>
+
+  <script src="{% static '/info/bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+  <script>
+    function togglePw() {
+      var inp = document.getElementById('id_password');
+      var eye = document.getElementById('pw-eye');
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        eye.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        inp.type = 'password';
+        eye.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+  </script>
+</body>
 </html>
