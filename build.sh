@@ -5,23 +5,18 @@ pip install -r requirements.txt
 python manage.py collectstatic --noinput
 python manage.py migrate --noinput
 
-# Check user count (strip the auto-import noise from output)
+# Check if DB is empty
 USER_COUNT=$(python manage.py shell -c "
 from django.contrib.auth import get_user_model
-User = get_user_model()
-try:
-    print(User.objects.count())
-except:
-    print(0)
-" 2>/dev/null | tail -1)
+print(get_user_model().objects.count())
+" 2>/dev/null | grep -E '^[0-9]+$' || echo "0")
 
-echo "Current user count: $USER_COUNT"
+echo "User count: $USER_COUNT"
 
-if [ "$USER_COUNT" -lt "10" ]; then
-    echo "Not enough data — flushing and reloading fixture..."
-    python manage.py flush --noinput
+if [ "$USER_COUNT" = "0" ]; then
+    echo "Empty DB — loading fixture..."
     python manage.py loaddata fixtures/initial_data.json
-    echo "Fixture loaded successfully."
+    echo "Done."
 else
-    echo "Database already seeded — skipping."
+    echo "DB already populated."
 fi

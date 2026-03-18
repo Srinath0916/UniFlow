@@ -283,8 +283,13 @@ days = {
 
 def create_attendance(sender, instance, **kwargs):
     if kwargs['created']:
-        start_date = AttendanceRange.objects.all()[:1].get().start_date
-        end_date = AttendanceRange.objects.all()[:1].get().end_date
+        try:
+            start_date = AttendanceRange.objects.all()[:1].get().start_date
+            end_date = AttendanceRange.objects.all()[:1].get().end_date
+        except AttendanceRange.DoesNotExist:
+            # Skip during fixture load or if AttendanceRange not configured yet
+            return
+        
         for single_date in daterange(start_date, end_date):
             if single_date.isoweekday() == days[instance.day]:
                 try:
